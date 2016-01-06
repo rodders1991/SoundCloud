@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Sound Board</string>
+    <string name="title_activity_choose_element">Choose Element</string>
+</resources>
