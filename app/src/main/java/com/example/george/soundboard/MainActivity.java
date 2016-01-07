@@ -1,76 +1,116 @@
 package com.example.george.soundboard;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
+import android.support.v7.widget.Toolbar;
 
-import java.net.URI;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static boolean bluePrintSet;
-    public static boolean[] eleInstanceCreated;
-    public static BluePrint[] bluePrint;
-    public static AudioCap[] audio;
-    public static int id;
-    public static int[] ids;
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton[] images = new ImageButton[7];
 
-        // Intial setUp of app goes here
-        if(!bluePrintSet)
-        {
-            bluePrintSet = true;
-            ids = new int[7];
-            audio = new AudioCap[7];
-            eleInstanceCreated = new boolean[7];
-            bluePrint = new BluePrint[7];
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-            for(int i=0; i < bluePrint.length; i++) bluePrint[i] = new BluePrint(i);
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
+
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
-        images[0] = (ImageButton) findViewById(R.id.image1);
-        images[1] = (ImageButton) findViewById(R.id.image2);
-        images[2] = (ImageButton) findViewById(R.id.image3);
-        images[3] = (ImageButton) findViewById(R.id.image4);
-        images[4] = (ImageButton) findViewById(R.id.image5);
-        images[5] = (ImageButton) findViewById(R.id.image6);
-        images[6] = (ImageButton) findViewById(R.id.image7);
+        return super.onOptionsItemSelected(item);
+    }
 
 
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        for(int i = 0; i < ids.length; i++)
-        {
-            if(!bluePrint[i].imageSet) {
-                images[i].setImageResource(R.mipmap.dashed);
-            }
-            else
-            {
-                images[i].setImageURI(bluePrint[i].image);
-            }
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        final Intent intent = new Intent(this, ChooseElement.class);
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
 
-        for (int i = 0; i < images.length; i++) {
-            final int p = i;
-            images[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   id = p;
-                    startActivity(intent);
-                }
-            });
+            if(position == 0) return new SetActivity();
+
+            if (position == 1)return new AppActivity();
+
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Set";
+                case 1:
+                    return "App";
+
+            }
+            return null;
         }
     }
 }

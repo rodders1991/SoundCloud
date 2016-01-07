@@ -35,19 +35,16 @@ public class ChooseElement extends AppCompatActivity {
 
     private ImageButton image;
     private AudioCap audio;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_element);
 
-        final int eleId = MainActivity.id;
-        final BluePrint bluePrint = MainActivity.bluePrint[eleId];
+        final int eleId = SetActivity.id;
+        final BluePrint bluePrint = SetActivity.bluePrint[eleId];
 
         // Initial set up of instances goes here TODO: Decide if needed
         if(!bluePrint.eleSet)
@@ -62,8 +59,9 @@ public class ChooseElement extends AppCompatActivity {
         Button set = (Button) findViewById(R.id.set);
         image = (ImageButton) findViewById(R.id.image);
 
-        try { BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri)); }
-        catch (IOException e) {}
+        //TODO: Change image revolution by converting to BitMap
+        //try { BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri)); }
+        //catch (IOException e) {}
 
 
 
@@ -113,9 +111,6 @@ public class ChooseElement extends AppCompatActivity {
         });
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -176,11 +171,11 @@ public class ChooseElement extends AppCompatActivity {
                 {
                     Log.e("BitMap","Failed to convert to BitMap: " + e);
                 }
-                MainActivity.bluePrint[MainActivity.id].image = fileUri;
+                SetActivity.bluePrint[SetActivity.id].image = fileUri;
 
-                image.setImageURI(MainActivity.bluePrint[MainActivity.id].image);
-                Log.v("ImageSet",MainActivity.bluePrint[MainActivity.id].image.toString());
-                MainActivity.bluePrint[MainActivity.id].imageSet = true;
+                image.setImageURI(SetActivity.bluePrint[SetActivity.id].image);
+                Log.v("ImageSet",SetActivity.bluePrint[SetActivity.id].image.toString());
+                SetActivity.bluePrint[SetActivity.id].imageSet = true;
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -189,43 +184,5 @@ public class ChooseElement extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "ChooseElement Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.george.soundboard/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "ChooseElement Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.george.soundboard/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
 }
