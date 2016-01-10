@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,13 +63,12 @@ public class ChooseElement extends AppCompatActivity {
         Button set = (Button) findViewById(R.id.set);
         image = (ImageButton) findViewById(R.id.image);
 
-        //TODO: Change image revolution by converting to BitMap
-        //try { BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri)); }
-        //catch (IOException e) {}
+
+
 
         if(SetActivity.bluePrint[SetActivity.id].imageSet)
         {
-            image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+            Picasso.with(image.getContext()).load(SetActivity.bluePrint[SetActivity.id].image).resize(300,300).centerCrop().into(image);
             image.setBackgroundResource(0);
             image.setScaleType(ImageView.ScaleType.FIT_XY);
         }
@@ -92,8 +92,8 @@ public class ChooseElement extends AppCompatActivity {
 
                 // create Intent to take a picture and return control to the calling application
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
                 Intent pickIntent = new Intent();
                 pickIntent.setType("image/*");
@@ -104,7 +104,7 @@ public class ChooseElement extends AppCompatActivity {
                 String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
                 Intent chooserIntent = Intent.createChooser(intent, pickTitle);
 
-                chooserIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
 
 
                 chooserIntent.putExtra
@@ -114,7 +114,7 @@ public class ChooseElement extends AppCompatActivity {
                         );
 
                 // start the image capture Intent
-                startActivityForResult(pickIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(chooserIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
 
 
@@ -191,24 +191,22 @@ public class ChooseElement extends AppCompatActivity {
                 String result=data.getStringExtra("result");
 
 
-                //File i = new File(fileUri.getPath());
+                File i = new File(fileUri.getPath());
 
-               // if(!i.exists())
-               // {
+                if(!i.exists())
+                {
 
-                 File  i = new File(getFileName(data.getData()));
-               // }
+                    SetActivity.bluePrint[SetActivity.id].image = data.getData();
+                }else
+                {
+                    SetActivity.bluePrint[SetActivity.id].image = fileUri;
+                }
 
-
-
-                    SetActivity.bluePrint[SetActivity.id].image = ImageCap.decodeImage(i, 100, 100);
-
-                    image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
-                    image.setBackgroundResource(0);
-                    image.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                    Log.v("ImageSet", SetActivity.bluePrint[SetActivity.id].image.toString());
-                    SetActivity.bluePrint[SetActivity.id].imageSet = true;
+                Picasso.with(image.getContext()).load(SetActivity.bluePrint[SetActivity.id].image).resize(300,300).centerCrop().into(image);
+                image.setBackgroundResource(0);
+                image.setScaleType(ImageView.ScaleType.FIT_XY);
+                Log.v("ImageSet", SetActivity.bluePrint[SetActivity.id].image.toString());
+                SetActivity.bluePrint[SetActivity.id].imageSet = true;
 
 
 
@@ -224,27 +222,6 @@ public class ChooseElement extends AppCompatActivity {
         }
     }
 
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
 
 
 }

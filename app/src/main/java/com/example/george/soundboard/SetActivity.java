@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.squareup.picasso.Picasso;
+
 /**
  * Created by George on 07/01/2016.
  */
@@ -59,7 +61,8 @@ public class SetActivity extends Fragment {
             }
             else
             {
-                images[i].setImageBitmap(bluePrint[i].image);
+                Picasso.with(images[i].getContext()).load(bluePrint[i].image).resize(300,300).centerCrop().into(images[i]);
+
             }
         }
 
