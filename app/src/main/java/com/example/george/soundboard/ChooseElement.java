@@ -2,11 +2,13 @@ package com.example.george.soundboard;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,13 +63,12 @@ public class ChooseElement extends AppCompatActivity {
         Button set = (Button) findViewById(R.id.set);
         image = (ImageButton) findViewById(R.id.image);
 
-        //TODO: Change image revolution by converting to BitMap
-        //try { BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri)); }
-        //catch (IOException e) {}
+
+
 
         if(SetActivity.bluePrint[SetActivity.id].imageSet)
         {
-            image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+            Picasso.with(image.getContext()).load(SetActivity.bluePrint[SetActivity.id].image).resize(300,300).centerCrop().into(image);
             image.setBackgroundResource(0);
             image.setScaleType(ImageView.ScaleType.FIT_XY);
         }
@@ -90,12 +92,29 @@ public class ChooseElement extends AppCompatActivity {
 
                 // create Intent to take a picture and return control to the calling application
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
+                Intent pickIntent = new Intent();
+                pickIntent.setType("image/*");
+                pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+
+
+                String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
+                Intent chooserIntent = Intent.createChooser(intent, pickTitle);
+
+
+
+
+                chooserIntent.putExtra
+                        (
+                                Intent.EXTRA_INITIAL_INTENTS,
+                                new Intent[] { pickIntent }
+                        );
+
                 // start the image capture Intent
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(chooserIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
 
 
@@ -174,13 +193,19 @@ public class ChooseElement extends AppCompatActivity {
 
                 File i = new File(fileUri.getPath());
 
-                SetActivity.bluePrint[SetActivity.id].image = ImageCap.decodeImage(i, 100, 100);
+                if(!i.exists())
+                {
 
-                image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+                    SetActivity.bluePrint[SetActivity.id].image = data.getData();
+                }else
+                {
+                    SetActivity.bluePrint[SetActivity.id].image = fileUri;
+                }
+
+                Picasso.with(image.getContext()).load(SetActivity.bluePrint[SetActivity.id].image).resize(300,300).centerCrop().into(image);
                 image.setBackgroundResource(0);
                 image.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                Log.v("ImageSet",SetActivity.bluePrint[SetActivity.id].image.toString());
+                Log.v("ImageSet", SetActivity.bluePrint[SetActivity.id].image.toString());
                 SetActivity.bluePrint[SetActivity.id].imageSet = true;
 
 
@@ -196,6 +221,7 @@ public class ChooseElement extends AppCompatActivity {
             }
         }
     }
+
 
 
 }

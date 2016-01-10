@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 public class BluePrint {
     public boolean eleSet;
     public AudioCap audio;
-    public Bitmap image;
+    public Uri image;
     public boolean imageSet;
 
     public BluePrint (int index)
