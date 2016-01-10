@@ -63,7 +63,10 @@ public class ChooseElement extends AppCompatActivity {
         //try { BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri)); }
         //catch (IOException e) {}
 
-
+        if(SetActivity.bluePrint[SetActivity.id].imageSet)
+        {
+            image.setImageURI(SetActivity.bluePrint[SetActivity.id].image);
+        }
 
         final Button record = (Button) findViewById(R.id.record);
         final Button play = (Button) findViewById(R.id.play);
