@@ -1,5 +1,6 @@
 package com.example.george.soundboard;
 
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.widget.ImageButton;
@@ -10,7 +11,7 @@ import android.widget.ImageButton;
 public class BluePrint {
     public boolean eleSet;
     public AudioCap audio;
-    public Uri image;
+    public Bitmap image;
     public boolean imageSet;
 
     public BluePrint (int index)
