@@ -2,11 +2,13 @@ package com.example.george.soundboard;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -92,10 +94,27 @@ public class ChooseElement extends AppCompatActivity {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+                Intent pickIntent = new Intent();
+                pickIntent.setType("image/*");
+                pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+
+
+                String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
+                Intent chooserIntent = Intent.createChooser(intent, pickTitle);
+
+                chooserIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+
+                chooserIntent.putExtra
+                        (
+                                Intent.EXTRA_INITIAL_INTENTS,
+                                new Intent[] { pickIntent }
+                        );
 
                 // start the image capture Intent
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(pickIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
 
 
@@ -172,16 +191,24 @@ public class ChooseElement extends AppCompatActivity {
                 String result=data.getStringExtra("result");
 
 
-                File i = new File(fileUri.getPath());
+                //File i = new File(fileUri.getPath());
 
-                SetActivity.bluePrint[SetActivity.id].image = ImageCap.decodeImage(i, 100, 100);
+               // if(!i.exists())
+               // {
 
-                image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
-                image.setBackgroundResource(0);
-                image.setScaleType(ImageView.ScaleType.FIT_XY);
+                 File  i = new File(getFileName(data.getData()));
+               // }
 
-                Log.v("ImageSet",SetActivity.bluePrint[SetActivity.id].image.toString());
-                SetActivity.bluePrint[SetActivity.id].imageSet = true;
+
+
+                    SetActivity.bluePrint[SetActivity.id].image = ImageCap.decodeImage(i, 100, 100);
+
+                    image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+                    image.setBackgroundResource(0);
+                    image.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    Log.v("ImageSet", SetActivity.bluePrint[SetActivity.id].image.toString());
+                    SetActivity.bluePrint[SetActivity.id].imageSet = true;
 
 
 
@@ -195,6 +222,28 @@ public class ChooseElement extends AppCompatActivity {
 
             }
         }
+    }
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 
