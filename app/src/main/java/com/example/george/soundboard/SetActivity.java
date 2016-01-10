@@ -59,7 +59,7 @@ public class SetActivity extends Fragment {
             }
             else
             {
-                images[i].setImageURI(bluePrint[i].image);
+                images[i].setImageBitmap(bluePrint[i].image);
             }
         }
 

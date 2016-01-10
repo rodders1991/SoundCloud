@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -65,7 +66,9 @@ public class ChooseElement extends AppCompatActivity {
 
         if(SetActivity.bluePrint[SetActivity.id].imageSet)
         {
-            image.setImageURI(SetActivity.bluePrint[SetActivity.id].image);
+            image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+            image.setBackgroundResource(0);
+            image.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 
         final Button record = (Button) findViewById(R.id.record);
@@ -168,17 +171,24 @@ public class ChooseElement extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String result=data.getStringExtra("result");
 
-                try {
-                    BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri));
-                }catch(IOException e)
-                {
-                    Log.e("BitMap","Failed to convert to BitMap: " + e);
-                }
-                SetActivity.bluePrint[SetActivity.id].image = fileUri;
 
-                image.setImageURI(SetActivity.bluePrint[SetActivity.id].image);
+                File i = new File(fileUri.getPath());
+
+                SetActivity.bluePrint[SetActivity.id].image = ImageCap.decodeImage(i, 100, 100);
+
+                image.setImageBitmap(SetActivity.bluePrint[SetActivity.id].image);
+                image.setBackgroundResource(0);
+                image.setScaleType(ImageView.ScaleType.FIT_XY);
+
                 Log.v("ImageSet",SetActivity.bluePrint[SetActivity.id].image.toString());
                 SetActivity.bluePrint[SetActivity.id].imageSet = true;
+
+
+
+
+
+
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
