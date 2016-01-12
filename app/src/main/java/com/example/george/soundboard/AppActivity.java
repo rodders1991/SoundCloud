@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by George on 07/01/2016.
@@ -15,6 +18,38 @@ public class AppActivity extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_app, container, false);
+
+        ImageButton[] images = new ImageButton[7];
+
+        images[0] = (ImageButton) rootView.findViewById(R.id.image1);
+        images[1] = (ImageButton) rootView.findViewById(R.id.image2);
+        images[2] = (ImageButton) rootView.findViewById(R.id.image3);
+        images[3] = (ImageButton) rootView.findViewById(R.id.image4);
+        images[4] = (ImageButton) rootView.findViewById(R.id.image5);
+        images[5] = (ImageButton) rootView.findViewById(R.id.image6);
+        images[6] = (ImageButton) rootView.findViewById(R.id.image7);
+
+        for(int i = 0; i < SetActivity.ids.length; i++)
+        {
+            if(SetActivity.bluePrint[i].imageSet) {
+                Picasso.with(images[i].getContext()).load(SetActivity.bluePrint[i].image).resize(300,300).centerCrop().into(images[i]);
+            }
+
+        }
+
+        for (int i = 0; i < images.length; i++) {
+            final int p = i;
+            images[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(SetActivity.audio[p].isSet) {
+                        SetActivity.audio[p].startPlaying();
+                    }
+
+                }
+            });
+        }
 
         return rootView;
     }

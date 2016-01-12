@@ -17,7 +17,7 @@ import java.io.IOException;
 public class AudioCap extends Activity {
     private static final String LOG_TAG = "AudioCap";
     private static String mFileName = null;
-
+    public boolean isSet;
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer   mPlayer = null;
@@ -38,7 +38,7 @@ public class AudioCap extends Activity {
         }
     }
 
-    private void startPlaying() {
+    public void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(mFileName);
@@ -61,6 +61,7 @@ public class AudioCap extends Activity {
         mRecorder.setOutputFile(mFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+        isSet = true;
         try {
             mRecorder.prepare();
         } catch (IOException e) {
@@ -105,6 +106,7 @@ public class AudioCap extends Activity {
     public AudioCap(int index) {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/audio"+index+".3gp";
+        isSet = false;
     }
 
     @Override
