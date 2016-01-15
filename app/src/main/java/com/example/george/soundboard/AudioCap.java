@@ -38,7 +38,7 @@ public class AudioCap extends Activity {
         }
     }
 
-    public void startPlaying() {
+    private void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(mFileName);
@@ -61,7 +61,7 @@ public class AudioCap extends Activity {
         mRecorder.setOutputFile(mFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-        isSet = true;
+
         try {
             mRecorder.prepare();
         } catch (IOException e) {
@@ -81,6 +81,7 @@ public class AudioCap extends Activity {
     private boolean recordStart = true;
     public void clickRecord(Button button)
     {
+        isSet = true;
         onRecord(recordStart);
         if (recordStart) {
             button.setText("Stop recording");
@@ -99,6 +100,13 @@ public class AudioCap extends Activity {
         } else {
             button.setText("Start playing");
         }
+        playStart = !playStart;
+    }
+
+    public void clickEle ()
+    {
+        onPlay(playStart);
+
         playStart = !playStart;
     }
 

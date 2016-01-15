@@ -44,7 +44,7 @@ public class AppActivity extends Fragment {
                 public void onClick(View v) {
 
                     if(SetActivity.audio[p].isSet) {
-                        SetActivity.audio[p].startPlaying();
+                        SetActivity.audio[p].clickEle();
                     }
 
                 }

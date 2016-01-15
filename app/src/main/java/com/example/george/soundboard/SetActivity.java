@@ -41,6 +41,7 @@ public class SetActivity extends Fragment {
             bluePrint = new BluePrint[7];
 
             for(int i=0; i < bluePrint.length; i++) bluePrint[i] = new BluePrint(i);
+            for(int i=0; i < audio.length; i++) audio[i] = new AudioCap(i);
 
         }
 
