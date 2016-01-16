@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class AudioCap extends Activity {
     private static final String LOG_TAG = "AudioCap";
-    private static String mFileName = null;
+    private String mFileName;
     public boolean isSet;
 
 

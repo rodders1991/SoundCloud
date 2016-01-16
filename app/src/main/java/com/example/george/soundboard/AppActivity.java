@@ -1,5 +1,6 @@
 package com.example.george.soundboard;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class AppActivity extends Fragment {
         images[6] = (ImageButton) rootView.findViewById(R.id.image7);
 
         final BluePrint[] bluePrint = SetActivity.bluePrint;
+        MediaPlayer[] mps = new MediaPlayer[bluePrint.length];
 
         for(int i = 0; i < bluePrint.length; i++)
         {
@@ -43,6 +45,8 @@ public class AppActivity extends Fragment {
             }
 
         }
+
+
 
         for (int i = 0; i < images.length; i++) {
             final int p = i;
