@@ -1,5 +1,6 @@
 package com.example.george.soundboard;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,13 +30,23 @@ public class AppActivity extends Fragment {
         images[5] = (ImageButton) rootView.findViewById(R.id.image6);
         images[6] = (ImageButton) rootView.findViewById(R.id.image7);
 
-        for(int i = 0; i < SetActivity.ids.length; i++)
+        final BluePrint[] bluePrint = SetActivity.bluePrint;
+        MediaPlayer[] mps = new MediaPlayer[bluePrint.length];
+
+        for(int i = 0; i < bluePrint.length; i++)
         {
-            if(SetActivity.bluePrint[i].imageSet) {
-                Picasso.with(images[i].getContext()).load(SetActivity.bluePrint[i].image).resize(300,300).centerCrop().into(images[i]);
+            if(bluePrint[i].imageSet) {
+                Picasso.with(images[i].getContext()).load(bluePrint[i].image).resize(300, 300).centerCrop().into(images[i]);
+            }
+
+            if(bluePrint[i].audio.isSet)
+            {
+                bluePrint[i].audio.prepare();
             }
 
         }
+
+
 
         for (int i = 0; i < images.length; i++) {
             final int p = i;
@@ -43,8 +54,8 @@ public class AppActivity extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if(SetActivity.audio[p].isSet) {
-                        SetActivity.audio[p].clickEle();
+                    if(bluePrint[p].audio.isSet) {
+                        bluePrint[p].audio.start();
                     }
 
                 }

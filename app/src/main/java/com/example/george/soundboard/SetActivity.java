@@ -18,7 +18,6 @@ public class SetActivity extends Fragment {
     private static boolean bluePrintSet;
     public static boolean[] eleInstanceCreated;
     public static BluePrint[] bluePrint;
-    public static AudioCap[] audio;
     public static int id;
     public static int[] ids;
 
@@ -36,12 +35,11 @@ public class SetActivity extends Fragment {
         {
             bluePrintSet = true;
             ids = new int[7];
-            audio = new AudioCap[7];
             eleInstanceCreated = new boolean[7];
             bluePrint = new BluePrint[7];
 
             for(int i=0; i < bluePrint.length; i++) bluePrint[i] = new BluePrint(i);
-            for(int i=0; i < audio.length; i++) audio[i] = new AudioCap(i);
+
 
         }
 
