@@ -1,12 +1,10 @@
 package com.example.george.soundboard;
 
 import android.app.Activity;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
@@ -18,6 +16,7 @@ public class AudioCap extends Activity {
     private static final String LOG_TAG = "AudioCap";
     private static String mFileName = null;
     public boolean isSet;
+
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer   mPlayer = null;
@@ -47,6 +46,23 @@ public class AudioCap extends Activity {
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
+    }
+    public void prepare()
+        {
+            mPlayer = new MediaPlayer();
+            try {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+            }
+            catch (IOException e) {
+                Log.e(LOG_TAG, "prepare() failed");
+            }
+
+        }
+
+    public void start()
+    {
+        mPlayer.start();
     }
 
     private void stopPlaying() {
@@ -100,13 +116,6 @@ public class AudioCap extends Activity {
         } else {
             button.setText("Start playing");
         }
-        playStart = !playStart;
-    }
-
-    public void clickEle ()
-    {
-        onPlay(playStart);
-
         playStart = !playStart;
     }
 

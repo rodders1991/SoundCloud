@@ -29,10 +29,17 @@ public class AppActivity extends Fragment {
         images[5] = (ImageButton) rootView.findViewById(R.id.image6);
         images[6] = (ImageButton) rootView.findViewById(R.id.image7);
 
-        for(int i = 0; i < SetActivity.ids.length; i++)
+        final BluePrint[] bluePrint = SetActivity.bluePrint;
+
+        for(int i = 0; i < bluePrint.length; i++)
         {
-            if(SetActivity.bluePrint[i].imageSet) {
-                Picasso.with(images[i].getContext()).load(SetActivity.bluePrint[i].image).resize(300,300).centerCrop().into(images[i]);
+            if(bluePrint[i].imageSet) {
+                Picasso.with(images[i].getContext()).load(bluePrint[i].image).resize(300, 300).centerCrop().into(images[i]);
+            }
+
+            if(bluePrint[i].audio.isSet)
+            {
+                bluePrint[i].audio.prepare();
             }
 
         }
@@ -43,8 +50,8 @@ public class AppActivity extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if(SetActivity.audio[p].isSet) {
-                        SetActivity.audio[p].clickEle();
+                    if(bluePrint[p].audio.isSet) {
+                        bluePrint[p].audio.start();
                     }
 
                 }
