@@ -74,24 +74,30 @@ public class ChooseElement extends AppCompatActivity {
         }
 
         final Button record = (Button) findViewById(R.id.record);
-        final Button play = (Button) findViewById(R.id.play);
+
         final Button preview = (Button) findViewById(R.id.preview);
 
         preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(audio.isSet) audio.start();
+                if(audio.isSet) audio.clickPlay();
             }
         });
+
+        if(audio.isSet)
+        {
+            record.setText("New Recording");
+        }
 
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 audio.clickRecord(record);
+
             }
         });
 
-        play.setVisibility(View.GONE);
+
 
         final Intent intent = new Intent(this, MainActivity.class);
 

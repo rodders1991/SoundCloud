@@ -102,20 +102,16 @@ public class AudioCap extends Activity {
         if (recordStart) {
             button.setText("Stop recording");
         } else {
-            button.setText("Start recording");
+            button.setText("New Recording");
         }
         recordStart = !recordStart;
     }
 
     private boolean playStart = true;
-    public void clickPlay (Button button)
+    public void clickPlay ()
     {
         onPlay(playStart);
-        if (playStart) {
-            button.setText("Stop playing");
-        } else {
-            button.setText("Start playing");
-        }
+
         playStart = !playStart;
     }
 
