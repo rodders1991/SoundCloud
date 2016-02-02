@@ -1,7 +1,9 @@
-package com.example.george.soundboard;
+package com.example.george.soundboard.camera.code;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.george.soundboard.R;
 
 public class CameraActivity extends AppCompatActivity {
 
